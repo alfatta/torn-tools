@@ -13,6 +13,7 @@ export interface RequestOptions<TBody = unknown> {
   body?: TBody;
   headers?: Record<string, string>;
   signal?: AbortSignal;
+  params?: Record<string, string | number | boolean>;
 }
 
 export class ApiError<T = unknown> extends Error {
@@ -59,17 +60,27 @@ export class ApiClient {
     endpoint: string,
     options: RequestOptions<TBody> = {},
   ): Promise<TResponse> {
-    const { method = "GET", body, headers, signal } = options;
+    const { method = "GET", body, headers, signal, params } = options;
 
-    const res = await fetch(`${this.baseUrl}${endpoint}`, {
+    let url = `${this.baseUrl}${endpoint}`;
+    if (params && Object.keys(params).length > 0) {
+      const searchParams = new URLSearchParams();
+      for (const [key, value] of Object.entries(params)) {
+        searchParams.append(key, String(value));
+      }
+      url += `?${searchParams.toString()}`;
+    }
+
+    const res = await fetch(url, {
       method,
       headers: await this.buildHeaders(headers),
       body: body ? JSON.stringify(body) : undefined,
       signal,
     });
 
-    let data = null;
     const contentType = res.headers.get("content-type");
+    // eslint-disable-next-line no-useless-assignment
+    let data: unknown = null;
 
     if (contentType?.includes("application/json")) {
       data = await res.json().catch(() => null);
@@ -78,7 +89,11 @@ export class ApiClient {
     }
 
     if (!res.ok) {
-      throw new ApiError(data?.message || res.statusText, res.status, data);
+      throw new ApiError(
+        (data as { message?: string })?.message || res.statusText,
+        res.status,
+        data as TResponse,
+      );
     }
 
     return data as TResponse;
