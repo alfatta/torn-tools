@@ -1,8 +1,11 @@
 import { useState } from "react"
 import { Eye, EyeOff, Check, X } from "lucide-react"
 import { Pages } from "~/components/layout/pages"
+import { Badge } from "~/components/ui/badge"
 import { Button } from "~/components/ui/button"
 import { useApiKey } from "~/hooks/use-api-key"
+import { useApiUserBasic } from "~/services/user-basic"
+import { cn } from "~/lib/cn"
 
 export function SettingsPage() {
   const { apiKey, setApiKey } = useApiKey()
@@ -23,11 +26,19 @@ export function SettingsPage() {
     setTimeout(() => setIsSaved(false), 2000)
   }
 
+  const { data, isLoading } = useApiUserBasic(true)
+
   return (
     <Pages title="Settings" subtitle="Configure your Torn Tools preferences.">
       <section className="flex flex-col gap-6">
         <div className="rounded-lg border p-4">
-          <h2 className="text-xl font-semibold mb-4">API Key</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold">API Key</h2>
+            <Badge variant="secondary">
+              <span className={cn('h-2 w-2 rounded-full', data ? "bg-green-500" : isLoading ? "bg-orange-500" : "bg-red-500")} />
+              {data ? data.profile.name : isLoading ? "Loading..." : "Error"}
+            </Badge>
+          </div>
           <p className="text-sm mb-4">
             Enter your Torn City API key to enable personalized features. Your
             API key is stored locally and never shared.{" "}
@@ -48,7 +59,7 @@ export function SettingsPage() {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 placeholder="Enter your API key"
-                className="w-full h-10 px-3 pr-10 rounded-lg border border-[var(--color-border)] bg-background text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
+                className="w-full h-10 px-3 pr-10 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-accent"
               />
               <button
                 type="button"

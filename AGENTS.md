@@ -220,3 +220,93 @@ export function MyFeatureProvider({ children }: { children: React.ReactNode }) {
 ### Usage
 1. Add provider in `src/main.tsx` wrapping the app
 2. Use the hook anywhere in the app: `const { value, setValue } = useMyFeature()`
+
+## API Pattern
+
+Services are organized by feature in `src/services/`:
+
+```
+src/services/
+├── apiClient.ts           # Base client with HTTP methods
+└── <feature>/
+    ├── types.ts          # TypeScript interfaces
+    ├── fetch.ts        # Fetcher function using api client
+    └── index.ts        # React Query hook
+```
+
+### apiClient.ts
+Core client with error handling and generic methods:
+
+```typescript
+export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+
+export interface RequestOptions<TBody = unknown> {
+  method?: HttpMethod;
+  body?: TBody;
+  headers?: Record<string, string>;
+  signal?: AbortSignal;
+}
+
+export class ApiError<T = unknown> extends Error {
+  status: number;
+  data?: T;
+}
+
+export class ApiClient {
+  private baseUrl: string;
+  private getToken?: () => string | null | Promise<string | null>;
+
+  get<TResponse>(endpoint: string, options?: RequestOptions)
+  post<TResponse, TBody>(endpoint: string, body?: TBody, options?: RequestOptions<TBody>)
+  put<TResponse, TBody>(endpoint: string, body?: TBody, options?: RequestOptions<TBody>)
+  patch<TResponse, TBody>(endpoint: string, body?: TBody, options?: RequestOptions<TBody>)
+  delete<TResponse>(endpoint: string, options?: RequestOptions)
+}
+
+export const api = new ApiClient({
+  baseUrl: "https://api.torn.com/v2",
+  getToken: () => localStorage.getItem(LS_API_KEY),
+});
+```
+
+### types.ts
+Feature-specific TypeScript interfaces:
+
+```typescript
+export interface UserBasic {
+  profile: {
+    id: number;
+    name: string;
+    level: number;
+  };
+}
+```
+
+### fetch.ts
+Fetcher function exporting URL constant and fetcher:
+
+```typescript
+import { api } from "../apiClient";
+import type { UserBasic } from "./types";
+
+export const apiUserBasicURL = "/user/basic";
+export const apiUserBasicFetcher = () => {
+  return api.get<UserBasic>(apiUserBasicURL);
+};
+```
+
+### index.ts
+React Query hook:
+
+```typescript
+import { useQuery } from "@tanstack/react-query";
+import { apiUserBasicFetcher, apiUserBasicURL } from "./fetch";
+
+export function useApiUserBasic(enabled: boolean) {
+  return useQuery({
+    queryKey: [apiUserBasicURL],
+    queryFn: apiUserBasicFetcher,
+    enabled,
+  });
+}
+```
