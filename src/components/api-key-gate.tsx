@@ -10,6 +10,7 @@ interface ApiKeyGateProps {
 export function ApiKeyGate({ children, fallback }: ApiKeyGateProps) {
   const { apiKey } = useApiKey()
 
+  // todo: check isValidAPIKey by api
   if (!apiKey) {
     if (fallback) {
       return <>{fallback}</>
