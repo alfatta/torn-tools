@@ -1,11 +1,11 @@
 import { useEffect, useState, type ReactNode } from "react"
-import { ThemeContext } from "./use-theme"
-import type { Theme } from "./theme-types"
+import { ThemeContext } from "../hooks/use-theme"
+import type { Theme } from "../hooks/use-theme"
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [systemDark, setSystemDark] = useState(() => 
-    typeof window !== "undefined" 
-      ? window.matchMedia("(prefers-color-scheme: dark)").matches 
+  const [systemDark, setSystemDark] = useState(() =>
+    typeof window !== "undefined"
+      ? window.matchMedia("(prefers-color-scheme: dark)").matches
       : false
   )
 
