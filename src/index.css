@@ -30,24 +30,18 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-text: #9ca3af;
-    --color-text-heading: #f3f4f6;
-    --color-background: #16171d;
-    --color-border: #2e303a;
-    --color-code-bg: #1f2028;
-    --color-accent: #c084fc;
-    --color-accent-bg: rgba(192, 132, 252, 0.15);
-    --color-accent-border: rgba(192, 132, 252, 0.5);
-    --color-social-bg: rgba(47, 48, 58, 0.5);
+.dark {
+  --color-text: #9ca3af;
+  --color-text-heading: #f3f4f6;
+  --color-background: #16171d;
+  --color-border: #2e303a;
+  --color-code-bg: #1f2028;
+  --color-accent: #c084fc;
+  --color-accent-bg: rgba(192, 132, 252, 0.15);
+  --color-accent-border: rgba(192, 132, 252, 0.5);
+  --color-social-bg: rgba(47, 48, 58, 0.5);
 
-    --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.25);
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+  --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.25);
 }
 
 #root {
