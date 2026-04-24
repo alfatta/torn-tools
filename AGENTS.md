@@ -160,3 +160,63 @@ pnpm run build
 - ESLint for linting
 - pnpm for package management
 - No testing framework currently installed
+
+## Context/Provider Pattern
+
+This project follows a specific pattern for creating React contexts and providers:
+
+### Hooks (`src/hooks/use-*.ts`)
+Create the context and custom hook:
+
+```typescript
+import { createContext, useContext } from "react"
+
+export type MyFeature = "value1" | "value2"
+
+export interface MyFeatureContextType {
+  value: MyFeature
+  setValue: (value: MyFeature) => void
+}
+
+const MyFeatureContext = createContext<MyFeatureContextType | undefined>(undefined)
+
+export function useMyFeature(): MyFeatureContextType {
+  const context = useContext(MyFeatureContext)
+  if (!context) {
+    throw new Error("useMyFeature must be used within a MyFeatureProvider")
+  }
+  return context
+}
+
+export { MyFeatureContext }
+```
+
+### Providers (`src/providers/*.tsx`)
+Create the provider component with state management:
+
+```typescript
+import { useState, useEffect } from "react"
+import { MyFeatureContext } from "~/hooks/use-my-feature"
+
+const STORAGE_KEY = "my-feature-key"
+
+export function MyFeatureProvider({ children }: { children: React.ReactNode }) {
+  const [value, setValue] = useState<string>(() => {
+    return localStorage.getItem(STORAGE_KEY) ?? "default"
+  })
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, value)
+  }, [value])
+
+  return (
+    <MyFeatureContext.Provider value={{ value, setValue }}>
+      {children}
+    </MyFeatureContext.Provider>
+  )
+}
+```
+
+### Usage
+1. Add provider in `src/main.tsx` wrapping the app
+2. Use the hook anywhere in the app: `const { value, setValue } = useMyFeature()`
