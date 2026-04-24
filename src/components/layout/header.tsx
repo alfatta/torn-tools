@@ -19,7 +19,6 @@ export function Header() {
       <div className="flex items-center justify-between p-4">
         <nav className="flex items-center gap-6 text-sm">
           <Link to="/" className="font-medium hover:text-accent">Home</Link>
-          <Link to="/about" className="font-medium hover:text-accent">About</Link>
           <Link to="/tos" className="font-medium hover:text-accent">ToS</Link>
         </nav>
         <Button variant="ghost" size="icon" onClick={cycleTheme}>
