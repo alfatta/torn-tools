@@ -1,19 +1,29 @@
 # Agent Guidelines for Torn Tools
 
+## Package Management
+
+**Always use `pnpm` for dependency management** (npm install, adding packages, etc.).
+
 ## Build Commands
 
 ```bash
 # Development server with HMR
-npm run dev
+pnpm run dev
 
 # Production build (TypeScript check + Vite build)
-npm run build
+pnpm run build
 
 # Lint all files
-npm run lint
+pnpm run lint
 
 # Preview production build
-npm run preview
+pnpm run preview
+
+# Add a dependency
+pnpm add <package>
+
+# Add a dev dependency
+pnpm add -D <package>
 ```
 
 ## Testing
@@ -117,7 +127,7 @@ The `dist` folder is ignored by ESLint.
 
 ### Running Lint
 ```bash
-npm run lint  # Lints all .ts/.tsx files
+pnpm run lint  # Lints all .ts/.tsx files
 ```
 
 ## TypeScript Compiler
@@ -127,7 +137,7 @@ npm run lint  # Lints all .ts/.tsx files
 tsc --noEmit
 
 # Full build (type check + bundle)
-npm run build
+pnpm run build
 ```
 
 ## Accessibility
@@ -141,11 +151,12 @@ npm run build
 
 - Write clear commit messages describing the "why" not just the "what"
 - Keep commits focused and atomic
-- Run `npm run lint` and `npm run build` before committing when possible
+- Run `pnpm run lint` and `pnpm run build` before committing when possible
 
 ## Dependencies
 
 - React 19.2.5 with TypeScript
 - Vite for bundling and dev server
 - ESLint for linting
+- pnpm for package management
 - No testing framework currently installed
