@@ -1,9 +1,9 @@
 export function Footer() {
   return (
-    <footer className="border-t border-[var(--color-border)] bg-[var(--color-background)] py-6 mt-auto">
-      <div className="flex flex-col items-center justify-center gap-4 px-4 text-sm text-[var(--color-text)]">
-        <p>2026 Torn Tools. All rights reserved.</p>
-      </div>
+    <footer className="p-6">
+      <p className="text-sm text-center">
+        &copy; {new Date().getFullYear()} Torn Tools. All rights reserved.
+      </p>
     </footer>
   )
 }

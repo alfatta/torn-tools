@@ -15,12 +15,12 @@ export function Header() {
   const ThemeIcon = theme === "dark" ? Moon : theme === "light" ? Sun : Laptop
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-[var(--color-border)] bg-[var(--color-background)]/95 backdrop-blur supports-[backdrop-filter]:bg-[var(--color-background)]/60">
-      <div className="flex h-14 items-center justify-between px-4">
+    <header className="sticky top-0 z-50 bg-background">
+      <div className="flex items-center justify-between p-4">
         <nav className="flex items-center gap-6 text-sm">
-          <Link to="/" className="font-medium text-[var(--color-text-heading)] hover:text-[var(--color-accent)] transition-colors">Home</Link>
-          <Link to="/about" className="font-medium text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors">About</Link>
-          <Link to="/tos" className="font-medium text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors">ToS</Link>
+          <Link to="/" className="font-medium hover:text-accent">Home</Link>
+          <Link to="/about" className="font-medium hover:text-accent">About</Link>
+          <Link to="/tos" className="font-medium hover:text-accent">ToS</Link>
         </nav>
         <Button variant="ghost" size="icon" onClick={cycleTheme}>
           <ThemeIcon className="h-5 w-5" />
