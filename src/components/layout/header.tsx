@@ -20,8 +20,7 @@ export function Header() {
         <nav className="flex items-center gap-6 text-sm">
           <Link to="/" className="font-medium text-[var(--color-text-heading)] hover:text-[var(--color-accent)] transition-colors">Home</Link>
           <Link to="/about" className="font-medium text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors">About</Link>
-          <a href="#" className="font-medium text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors hidden sm:inline">Projects</a>
-          <a href="#" className="font-medium text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors hidden sm:inline">Contact</a>
+          <Link to="/tos" className="font-medium text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors">ToS</Link>
         </nav>
         <Button variant="ghost" size="icon" onClick={cycleTheme}>
           <ThemeIcon className="h-5 w-5" />
