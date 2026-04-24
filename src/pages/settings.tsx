@@ -26,7 +26,7 @@ export function SettingsPage() {
     setTimeout(() => setIsSaved(false), 2000)
   }
 
-  const { data, isLoading } = useApiUserBasic(true)
+  const { data, isLoading } = useApiUserBasic(!!apiKey)
 
   return (
     <Pages title="Settings" subtitle="Configure your Torn Tools preferences.">
